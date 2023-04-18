@@ -8,7 +8,7 @@ import sys
 
 import numpy as np
 
-from gdpc import __url__, Editor, Block, geometry
+from gdpc import __url__, Editor, Block, geometry, vector_tools
 from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
 
@@ -115,27 +115,45 @@ for point in buildRect.outline:
     """ 
         
 
+
+
+
+
 import sys
-sys.path[0] = sys.path[0].removesuffix('\\test_files')
+
+import numpy as np
+from glm import ivec2, ivec3
+
+from gdpc import __url__, Editor, Block, geometry
+from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
+from gdpc.vector_tools import Y, addY, dropY, line3D, circle, fittingCylinder
+
+
+groundCenter = addY(buildRect.center, height)
 
 
 
-
-from structures.nbt.convert_nbt import convert_nbt
-from structures.nbt.nbt_asset import NBTAsset
-from structures.structure import Structure
-from structures.transformation import Transformation
-from gdpc.editor import Editor
-from gdpc.block import Block
-from palette.palette import Palette
-from palette.palette_swap import palette_swap
-
-structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/grass/grass_structures/grass_tower.nbt")
-for (pos, palette_index) in structure.blocks.items():
-    block = structure.palette[palette_index]
-    build_pos = buildArea.begin + pos
-    editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
-    print(build_pos, block.to_gdpc_block())
+#place three blocks on top of each other, centered to eachother. The first block is 3x3 second is 5x5 and third is 2x2. on the ground
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-1, 0, -1), # Corner 1
+    groundCenter + ivec3(1,  2, 1), # Corner 2
+    Block("spruce_log")
+)
 
 
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-3, 3, -3), # Corner 1
+    groundCenter + ivec3(3,  8, 3), # Corner 2
+    Block("mossy_stone_bricks")
+)
 
+"""
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-1, 5, -1), # Corner 1
+    groundCenter + ivec3(1,  10, 1), # Corner 2
+    Block("red_concrete")
+)
+"""
